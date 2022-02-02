@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import "express-async-errors";
+import morgan from "morgan";
 
 // db and authenticateUser
 import connectDB from "./db/connect.js";
@@ -16,14 +17,19 @@ import errorHandlerMiddleware from "./middlewares/error-handler.js";
 const app = express();
 dotenv.config();
 
+if (process.env.NODE_ENV !== "production") {
+  app.use(morgan("dev"));
+}
 app.use(express.json());
 
 app.get("/", (req, res) => {
   throw new Error("Trara");
 });
 
-app.use(`/api/v${process.env.API_VERSION}/auth`, authRouter);
-app.use(`/api/v${process.env.API_VERSION}/jobs`, jobsRouter);
+const version = process.env.API_VERSION;
+
+app.use(`/api/v${version}/auth`, authRouter);
+app.use(`/api/v${version}/jobs`, jobsRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

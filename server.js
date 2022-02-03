@@ -13,6 +13,7 @@ import jobsRouter from "./routes/jobsRoutes.js";
 // ##### middlewares ######
 import notFoundMiddleware from "./middlewares/not-found.js";
 import errorHandlerMiddleware from "./middlewares/error-handler.js";
+import authUser from "./middlewares/auth.js";
 
 const app = express();
 dotenv.config();
@@ -29,18 +30,22 @@ app.get("/", (req, res) => {
 const version = process.env.API_VERSION;
 
 app.use(`/api/v${version}/auth`, authRouter);
-app.use(`/api/v${version}/jobs`, jobsRouter);
+app.use(`/api/v${version}/jobs`, authUser, jobsRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 5000;
 
-const start = (async () => {
+const start = async () => {
   try {
     await connectDB(process.env.MONGO_URL);
-    app.listen(port, () => console.info(`Server listening on port ${port}`));
+    app.listen(port, () =>
+      console.info(`Connected to MongoDB & listening on port ${port}...`)
+    );
   } catch (error) {
     console.log(error);
   }
-})();
+};
+
+start();

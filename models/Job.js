@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import validator from "validator";
 
 const JobSchema = new mongoose.Schema(
   {
@@ -11,7 +10,7 @@ const JobSchema = new mongoose.Schema(
     position: {
       type: String,
       required: [true, "Please provide a position"],
-      maxlength: 20,
+      maxlength: 50,
     },
     status: {
       type: String,

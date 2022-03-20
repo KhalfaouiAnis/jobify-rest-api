@@ -2,7 +2,7 @@
   "name": "jobify",
   "version": "1.0.0",
   "description": "API to serve the front end of Jobify web application",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "install-server": "npm install",
@@ -11,6 +11,7 @@
     "install-client": "cd client && npm install",
     "heroku-postbuild": "npm run install-client && npm run build-client",
     "server": "nodemon server --ignore client",
+    "test": "nodemon test",
     "client": "npm start --prefix client",
     "start": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\""
   },
